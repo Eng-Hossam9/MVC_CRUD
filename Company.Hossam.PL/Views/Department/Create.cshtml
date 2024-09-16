@@ -1,0 +1,30 @@
+﻿@model Company.Hossam.DAL.Model.Departments
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<h4>Add Departments</h4>
+<hr />
+<div class="row my-3">
+    <div class="col-md-12">
+        <form class=" form-control" method="post" asp-controller="Department" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <partial name="CreateUpdatePartialViewDepartment" model="Model" />
+
+            <div class="form-group my-3">
+                <input type="submit" value="Create" class="btn btn-success" />
+                <a class="btn btn-primary" asp-action="Index" asp-controller="Department">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Validation {
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+

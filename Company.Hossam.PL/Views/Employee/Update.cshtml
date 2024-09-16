@@ -1,0 +1,33 @@
+﻿@model Company.Hossam.DAL.Model.Employees
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h1>Update</h1>
+
+<h4>Employees</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form class="form-control" method="post" asp-controller="Employee" asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <partial name="CreateUpdatePartialViewEmployee" model="Model" />
+
+            <div class="form-group my-3">
+            
+                <input type="submit" value="Save" class="btn btn-success" /> 
+                <a class="btn btn-primary" asp-controller="Employee" asp-action="Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Validation {
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+

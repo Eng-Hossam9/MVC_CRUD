@@ -1,0 +1,49 @@
+﻿@model Employees
+
+@{
+    var department = new SelectList(ViewData["Departments"] as IEnumerable<Departments>, nameof(Departments.Id), nameof(Departments.Name));
+}
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="form-group my-3">
+    <label asp-for="Name" class="control-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="form-group my-3">
+    <label asp-for="Age" class="control-label"></label>
+    <input asp-for="Age" class="form-control" />
+    <span asp-validation-for="Age" class="text-danger"></span>
+</div>
+<div class="form-group my-3">
+    <label asp-for="Address" class="control-label"></label>
+    <input asp-for="Address" class="form-control" />
+    <span asp-validation-for="Address" class="text-danger"></span>
+</div>
+<div class="form-group my-3">
+    <label asp-for="Salary" class="control-label"></label>
+    <input asp-for="Salary" class="form-control" />
+    <span asp-validation-for="Salary" class="text-danger"></span>
+</div>
+<div class="form-group my-3">
+    <label asp-for="Email" class="control-label"></label>
+    <input asp-for="Email" class="form-control" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+</div>
+<div class="form-group my-3">
+    <label asp-for="PhoneNumber" class="control-label"></label>
+    <input asp-for="PhoneNumber" class="form-control" />
+    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+</div>
+
+<div class="form-group my-3">
+    <label asp-for="HiringDate" class="control-label"></label>
+    <input asp-for="HiringDate" class="form-control" />
+    <span asp-validation-for="HiringDate" class="text-danger"></span>
+</div>
+
+<div class="form-group my-3">
+    <label asp-for="WorkFor" class="control-label"></label>
+    <select asp-items="department" asp-for="WorkForId" class="form-select">
+    <option value="@null">--NoDepartmemnt--</option>
+</select>
+</div>
