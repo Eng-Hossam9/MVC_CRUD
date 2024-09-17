@@ -2,6 +2,7 @@ using Company.Hossam.BLL.InterFaces;
 using Company.Hossam.BLL.Repositories;
 using Company.Hossam.DAL.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Company.Hossam.PL
 {
@@ -16,9 +17,8 @@ namespace Company.Hossam.PL
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-
             builder.Services.AddDbContext<HossamCompanyDB>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); //to allow Dependancy Injection 
-
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             var app = builder.Build();
 
             if (!app.Environment.IsDevelopment())

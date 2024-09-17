@@ -9,6 +9,7 @@ namespace Company.Hossam.BLL.InterFaces
 {
     public interface IEmployeeRepository:IGenaricRepository<Employees>
     {
-        IEnumerable<Employees> GetAllWithDepartment();
+        IEnumerable<Employees> SearchByName(string Name);   
+
     }
 }

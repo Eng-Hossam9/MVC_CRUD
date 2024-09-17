@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Company.Hossam.DAL.Model;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Company.Hossam.DAL.Model
+namespace Company.Hossam.PL.ViewModels
 {
-    public class Employees : BaseEntity
-    {
+    public class EmployeeViewModel
 
-        [Required(ErrorMessage ="Name Is Required")]
+    {
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "Name Is Required")]
         public string Name { get; set; }
 
-        [Range(18,50,ErrorMessage = "Age Must be Between 18 and 50")]
+        [Range(18, 50, ErrorMessage = "Age Must be Between 18 and 50")]
         public int? Age { get; set; }
 
         [RegularExpression(@"[0-9]{1,3}-[a-zA-Z]{3,15}-[a-zA-Z]{3,15}-[a-zA-Z]{3,15}",
-                           ErrorMessage ="Address Must Be Like 123-Street-City-Country")]
+                           ErrorMessage = "Address Must Be Like 123-Street-City-Country")]
         public string Address { get; set; }
 
         [Required(ErrorMessage = "Salary Is Required")]
@@ -32,17 +30,11 @@ namespace Company.Hossam.DAL.Model
 
         public string PhoneNumber { get; set; }
 
-        public bool IsActive { get; set; }
 
         public DateTime? HiringDate { get; set; }
-        public DateTime? DateOfCreation { get; set; }= DateTime.Now;
 
-        public int ? WorkForId { get; set; }
+        public int? WorkForId { get; set; }
+
         public Departments? WorkFor { get; set; }
-
-
-
-
-
     }
 }

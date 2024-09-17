@@ -1,6 +1,8 @@
-﻿using Company.Hossam.BLL.InterFaces;
+﻿using AutoMapper;
+using Company.Hossam.BLL.InterFaces;
 using Company.Hossam.BLL.Repositories;
 using Company.Hossam.DAL.Model;
+using Company.Hossam.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -9,16 +11,19 @@ namespace Company.Hossam.PL.Controllers
     public class DepartmentController : Controller
     {
         private readonly IDepartmentRepository _departmentRepository;
+        private readonly IMapper _Mapper;
 
-        public DepartmentController(IDepartmentRepository departmentRepository)
+        public DepartmentController(IDepartmentRepository departmentRepository,IMapper mapper)
         {
             _departmentRepository = departmentRepository;
+            _Mapper = mapper;
         }
         public IActionResult Index()
         {
             var AllDepaprtment = _departmentRepository.GetAll();
+            var deparmentViewModel = _Mapper.Map<IEnumerable< DepartmentViewModel>>(AllDepaprtment) ;
 
-            return View(AllDepaprtment);
+            return View(deparmentViewModel);
         }
 
         public IActionResult Create() 
@@ -28,12 +33,13 @@ namespace Company.Hossam.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Departments department)
+        public IActionResult Create(DepartmentViewModel DepartmentViewModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    var department = _Mapper.Map<Departments>(DepartmentViewModel);
                     var result = _departmentRepository.Add(department);
                     if (result > 0)
                     {
@@ -48,7 +54,7 @@ namespace Company.Hossam.PL.Controllers
                 Console.WriteLine(ex.Message);
             }
 
-            return View(department);
+            return View(DepartmentViewModel);
 
 
         }
@@ -75,9 +81,11 @@ namespace Company.Hossam.PL.Controllers
         public IActionResult Details(int? id)
         {
             if (id == null) return BadRequest();
-            var dept = _departmentRepository.GetSpacificById(id);
 
-            return View(dept);
+            var dept = _departmentRepository.GetSpacificById(id);
+            var departmentViewModel = _Mapper.Map<DepartmentViewModel>(dept);
+
+            return View(departmentViewModel);
         }
 
 
@@ -93,19 +101,21 @@ namespace Company.Hossam.PL.Controllers
             {
                 return NotFound();
             }
+            var departmentViewModel = _Mapper.Map<DepartmentViewModel>(department);
 
-            return View(department);
+            return View(departmentViewModel);
         }
 
 
         [HttpPost]
-        public IActionResult Update(Departments department)
+        public IActionResult Update(DepartmentViewModel DepartmentViewModel)
         {
             try
             {
 
                 if (ModelState.IsValid)
                 {
+                    var department=_Mapper.Map<Departments>(DepartmentViewModel);
                     var result = _departmentRepository.Update(department);
                     if (result > 0)
                     {
@@ -121,7 +131,7 @@ namespace Company.Hossam.PL.Controllers
             }
 
 
-            return View(department);
+            return View(DepartmentViewModel);
 
 
         }

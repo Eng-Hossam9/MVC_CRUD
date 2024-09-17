@@ -1,4 +1,4 @@
-﻿@model Company.Hossam.DAL.Model.Employees
+﻿@model EmployeeViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -9,7 +9,7 @@
 <hr />
 <div class="row my-3">
     <div class="col-md-12">
-        <form class=" form-control" method="post" asp-controller="Employee" asp-action="Create">
+        <form class=" form-control " method="post" asp-controller="Employee" asp-action="Create">
             
             <partial name="CreateUpdatePartialViewEmployee" model="Model" />
 

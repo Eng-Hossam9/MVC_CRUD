@@ -12,7 +12,7 @@ namespace Company.Hossam.BLL.Repositories
 {
     public class Genaric_Repository<T> : IGenaricRepository<T> where  T :BaseEntity
     {
-        private readonly HossamCompanyDB _Context;
+        protected readonly HossamCompanyDB _Context;
         public Genaric_Repository(HossamCompanyDB Context)
         {
             _Context = Context;

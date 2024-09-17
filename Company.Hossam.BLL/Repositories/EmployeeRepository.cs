@@ -12,7 +12,6 @@ namespace Company.Hossam.BLL.Repositories
 {
     public class EmployeeRepository : Genaric_Repository<Employees>,IEmployeeRepository
     {
-        private readonly HossamCompanyDB _context;
 
         public EmployeeRepository(HossamCompanyDB context) :base(context)
         {
@@ -22,10 +21,13 @@ namespace Company.Hossam.BLL.Repositories
 
         public IEnumerable<Employees> GetAllWithDepartment()
         {
-            return _context.Employees.Include(e=>e.WorkFor).ToList();
+            return _Context.Employees.Include(e=>e.WorkFor).ToList();
 
         }
 
-
+        public IEnumerable<Employees> SearchByName(string Name)
+        {
+            return _Context.Employees.Where(e=>e.Name.ToLower().Contains(Name.ToLower())).Include(e=>e.WorkFor).AsNoTracking().ToList();
+        }
     }
 }
