@@ -2,6 +2,7 @@
 using Company.Hossam.BLL.InterFaces;
 using Company.Hossam.BLL.Repositories;
 using Company.Hossam.DAL.Model;
+using Company.Hossam.PL.Helper;
 using Company.Hossam.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -44,6 +45,7 @@ namespace Company.Hossam.PL.Controllers
         public IActionResult Create()
         {
             var departments = _DepartmentRepository.GetAll();
+
             ViewData["Departments"]=departments;
 
             return View();
@@ -57,10 +59,24 @@ namespace Company.Hossam.PL.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (EmployeeViewModel.Image != null)
+                    {
+                        EmployeeViewModel.ImageName = Document.UploadFile(EmployeeViewModel.Image, "Images");
+                    }
+                    else
+                    {
+                        EmployeeViewModel.ImageName = null;
+                    }
+
+
+
                     var Employee = _Mapper.Map<Employees>(EmployeeViewModel);
+                    
                     var result = _EmployeeRepository.Add(Employee);
+                    
                     if (result > 0)
                     {
+                        
                         return RedirectToAction("Index");
                     }
 
@@ -82,10 +98,13 @@ namespace Company.Hossam.PL.Controllers
         [HttpPost]
         public IActionResult Delete(int? id)
         {
+            var employee=_EmployeeRepository.GetSpacificById(id);
 
-            var Employee = _EmployeeRepository.DeletebYiD(id);
-            if (Employee > 0)
+            var count = _EmployeeRepository.DeletebYiD(id);
+            
+            if (count > 0)
             {
+                Document.DeleteFile(employee.ImageName, "Images");
                 return RedirectToAction("Index");
             }
 
@@ -121,6 +140,7 @@ namespace Company.Hossam.PL.Controllers
                 return NotFound();
             }
             var EmployeeViewModel = _Mapper.Map<EmployeeViewModel>(Employee);
+           
 
             return View(EmployeeViewModel);
         }
@@ -135,6 +155,24 @@ namespace Company.Hossam.PL.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    if (EmployeeViewModel.Image is not null)
+                    {
+
+                        if (EmployeeViewModel.ImageName is not null)
+                        {
+                            Document.DeleteFile(EmployeeViewModel.ImageName, "Images");
+                        }
+
+                        EmployeeViewModel.ImageName = Document.UploadFile(EmployeeViewModel.Image, "Images");
+
+                    }
+                    else
+                    {
+                        EmployeeViewModel.ImageName = EmployeeViewModel.ImageName;
+
+                    }
+
+
                     var Employee = _Mapper.Map<Employees>(EmployeeViewModel);
                     var result = _EmployeeRepository.Update( Employee);
                     if (result > 0)

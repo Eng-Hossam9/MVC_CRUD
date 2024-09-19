@@ -34,6 +34,8 @@ namespace Company.Hossam.DAL.Model
         public int ? WorkForId { get; set; }
         public Departments? WorkFor { get; set; }
 
+        public string? ImageName { get; set; }
+
 
 
 

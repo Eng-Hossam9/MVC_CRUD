@@ -9,11 +9,33 @@
 <h4>Employees</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form class="form-control" method="post" asp-controller="Employee" asp-action="Update">
+    <div class="col-md-12">
+        <form class="form-control" method="post" asp-controller="Employee" asp-action="Update" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+            @if (!string.IsNullOrEmpty(Model.ImageName))
+            {
+                <div class="form-group my-3">
+                    <label>Current Image:</label><br />
+                    <img src="~/Files/Images/@Model.ImageName" alt="Employee Image" width="150px" class="img-fluid rounded-circle" />
+                </div>
+
+                <input type="hidden"asp-for="ImageName" value="@Model.ImageName" />
+
+
+            }
+
+           
+
             <partial name="CreateUpdatePartialViewEmployee" model="Model" />
+
+         
+
+            <div class="form-group my-3">
+                <label asp-for="Image" class="control-label"></label>
+                <input type="file" asp-for="Image"  class="form-control" />
+            </div>
+
 
             <div class="form-group my-3">
             

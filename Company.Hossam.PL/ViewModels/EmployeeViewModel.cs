@@ -36,5 +36,9 @@ namespace Company.Hossam.PL.ViewModels
         public int? WorkForId { get; set; }
 
         public Departments? WorkFor { get; set; }
+
+        public IFormFile? Image { get; set; }
+
+        public string? ImageName { get; set; }
     }
 }

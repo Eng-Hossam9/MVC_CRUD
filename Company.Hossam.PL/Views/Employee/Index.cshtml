@@ -30,6 +30,9 @@
         <thead>
             <tr>
                 <th>
+                    Image
+                </th>
+                <th>
                     Name
                 </th>
                 <th>
@@ -70,6 +73,9 @@
             @foreach (var Emp in Model)
             {
                 <tr>
+                    <td>
+                        <img src="~/Files/Images/@Emp.ImageName" alt="Employee_Image" width="50px" class="img-fluid rounded-circle" />
+                    </td>
                     <td>@Emp.Name</td>
                     <td>@Emp.Age</td>
                     <td>@Emp.Address</td>
@@ -87,8 +93,8 @@
                     </td>
                     <td>
                         <form asp-controller="Employee" asp-action="Delete" asp-route-id="@Emp.Id" method="post" style="display:inline;">
-                            @Html.AntiForgeryToken() <!-- CSRF protection -->
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this department?');">
+                            @Html.AntiForgeryToken() <!-- CSRF protection -->   
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Employee?');">
                                 Delete
                             </button>
                         </form>

@@ -9,8 +9,10 @@ namespace Company.Hossam.PL.Mapping
     {
         public EmployeeProfile() 
         {
+
             CreateMap<Employees,EmployeeViewModel>();
             CreateMap<EmployeeViewModel,Employees>();
+        
         }
     }
 }
