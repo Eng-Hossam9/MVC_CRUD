@@ -23,28 +23,28 @@ namespace Company.Hossam.PL.Controllers
         }
 
 
-        public IActionResult Index(string searchInput ="")
+        public async Task<IActionResult> Index(string searchInput ="")
         {
             var Employee = Enumerable.Empty<Employees>();
 
             if (searchInput.IsNullOrEmpty())
             {
-                Employee = _EmployeeRepository.GetAll();    
+                Employee =await _EmployeeRepository.GetAllAsync();    
 
             }
             else
             {
 
-                 Employee = _EmployeeRepository.SearchByName(searchInput);
+                 Employee =await _EmployeeRepository.SearchByNameAsync(searchInput);
             }
             var EmployeeViewModel=_Mapper.Map<IEnumerable<EmployeeViewModel>>(Employee);
 
             return View(EmployeeViewModel);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var departments = _DepartmentRepository.GetAll();
+            var departments =await _DepartmentRepository.GetAllAsync();
 
             ViewData["Departments"]=departments;
 
@@ -53,7 +53,7 @@ namespace Company.Hossam.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(EmployeeViewModel EmployeeViewModel)
+        public async Task<IActionResult> Create(EmployeeViewModel EmployeeViewModel)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace Company.Hossam.PL.Controllers
 
                     var Employee = _Mapper.Map<Employees>(EmployeeViewModel);
                     
-                    var result = _EmployeeRepository.Add(Employee);
+                    var result = await _EmployeeRepository.AddAsync(Employee);
                     
                     if (result > 0)
                     {
@@ -96,11 +96,11 @@ namespace Company.Hossam.PL.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            var employee=_EmployeeRepository.GetSpacificById(id);
+            var employee=await _EmployeeRepository.GetSpacificByIdAsync(id);
 
-            var count = _EmployeeRepository.DeletebYiD(id);
+            var count =await _EmployeeRepository.DeletebYiDAsync(id);
             
             if (count > 0)
             {
@@ -116,10 +116,10 @@ namespace Company.Hossam.PL.Controllers
 
 
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return BadRequest();
-            var Employee = _EmployeeRepository.GetSpacificById(id);
+            var Employee =await _EmployeeRepository.GetSpacificByIdAsync(id);
 
             var employeeViewModel = _Mapper.Map<EmployeeViewModel>(Employee);
 
@@ -128,11 +128,11 @@ namespace Company.Hossam.PL.Controllers
 
 
 
-        public IActionResult Update(int? id)
+        public async Task<IActionResult> Update(int? id)
         {
             if (id == null) return BadRequest();
-            var  Employee = _EmployeeRepository.GetSpacificById(id);
-            var departments = _DepartmentRepository.GetAll();
+            var  Employee = await _EmployeeRepository.GetSpacificByIdAsync(id);
+            var departments =await _DepartmentRepository.GetAllAsync();
             ViewData["Departments"] = departments;
 
             if (Employee is null)
@@ -148,7 +148,7 @@ namespace Company.Hossam.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(EmployeeViewModel EmployeeViewModel)
+        public async Task<IActionResult> Update(EmployeeViewModel EmployeeViewModel)
         {
             try
             {
@@ -174,7 +174,7 @@ namespace Company.Hossam.PL.Controllers
 
 
                     var Employee = _Mapper.Map<Employees>(EmployeeViewModel);
-                    var result = _EmployeeRepository.Update( Employee);
+                    var result =await _EmployeeRepository.UpdateAsync( Employee);
                     if (result > 0)
                     {
                         return RedirectToAction("Index");

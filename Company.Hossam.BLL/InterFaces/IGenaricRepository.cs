@@ -9,13 +9,13 @@ namespace Company.Hossam.BLL.InterFaces
 {
     public interface IGenaricRepository<T>
     {
-        IEnumerable<T> GetAll();
+        Task<IEnumerable<T>> GetAllAsync();
 
-        T? GetSpacificById(int? id);
+        Task<T?> GetSpacificByIdAsync(int? id);
 
-        int Add(T department);
-        int Update(T department);
-        int Delete(T department);
-        int DeletebYiD(int? id);
+        Task<int> AddAsync(T department);
+        Task<int> UpdateAsync(T department);
+        Task<int> DeleteAsync(T department);
+        Task<int> DeletebYiDAsync(int? id);
     }
 }

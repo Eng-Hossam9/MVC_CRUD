@@ -18,9 +18,9 @@ namespace Company.Hossam.PL.Controllers
             _departmentRepository = departmentRepository;
             _Mapper = mapper;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var AllDepaprtment = _departmentRepository.GetAll();
+            var AllDepaprtment = await _departmentRepository.GetAllAsync();
             var deparmentViewModel = _Mapper.Map<IEnumerable< DepartmentViewModel>>(AllDepaprtment) ;
 
             return View(deparmentViewModel);
@@ -33,14 +33,14 @@ namespace Company.Hossam.PL.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(DepartmentViewModel DepartmentViewModel)
+        public async Task<IActionResult> Create(DepartmentViewModel DepartmentViewModel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     var department = _Mapper.Map<Departments>(DepartmentViewModel);
-                    var result = _departmentRepository.Add(department);
+                    var result = await _departmentRepository.AddAsync(department);
                     if (result > 0)
                     {
                         return RedirectToAction("Index");
@@ -62,9 +62,9 @@ namespace Company.Hossam.PL.Controllers
 
 
         [HttpPost]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            var department = _departmentRepository.DeletebYiD(id);
+            var department =await _departmentRepository.DeletebYiDAsync(id);
             if (department > 0)
             {
                 return RedirectToAction("Index");
@@ -78,11 +78,11 @@ namespace Company.Hossam.PL.Controllers
 
 
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return BadRequest();
 
-            var dept = _departmentRepository.GetSpacificById(id);
+            var dept = await _departmentRepository.GetSpacificByIdAsync(id);
             var departmentViewModel = _Mapper.Map<DepartmentViewModel>(dept);
 
             return View(departmentViewModel);
@@ -90,12 +90,12 @@ namespace Company.Hossam.PL.Controllers
 
 
 
-        public IActionResult Update(int? id)
+        public async Task<IActionResult> Update(int? id)
         {
 
             if (id == null) return BadRequest();
 
-            var department = _departmentRepository.GetSpacificById(id);
+            var department =await _departmentRepository.GetSpacificByIdAsync(id);
 
             if (department is null)
             {
@@ -108,7 +108,7 @@ namespace Company.Hossam.PL.Controllers
 
 
         [HttpPost]
-        public IActionResult Update(DepartmentViewModel DepartmentViewModel)
+        public async Task<IActionResult> Update(DepartmentViewModel DepartmentViewModel)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace Company.Hossam.PL.Controllers
                 if (ModelState.IsValid)
                 {
                     var department=_Mapper.Map<Departments>(DepartmentViewModel);
-                    var result = _departmentRepository.Update(department);
+                    var result = await _departmentRepository.UpdateAsync(department);
                     if (result > 0)
                     {
                         return RedirectToAction("Index");

@@ -18,46 +18,46 @@ namespace Company.Hossam.BLL.Repositories
             _Context = Context;
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             if(typeof(T)==typeof(Employees))
-            return (IEnumerable<T>) _Context.Employees.Include(e=>e.WorkFor).AsNoTracking().ToList();
+            return (IEnumerable<T>) await _Context.Employees.Include(e=>e.WorkFor).AsNoTracking().ToListAsync();
             else
             {
-                return _Context.Set<T>().AsNoTracking().ToList();
+                return await _Context.Set<T>().AsNoTracking().ToListAsync();
 
             }
 
         }
 
 
-        public T? GetSpacificById(int? id)
+        public async Task<T?> GetSpacificByIdAsync(int? id)
         {
-            return _Context.Set<T>().FirstOrDefault(d => d.Id == id);
+            return await _Context.Set<T>().FirstOrDefaultAsync(d => d.Id == id);
         }
 
-        public int Add(T entity)
+        public async Task<int> AddAsync(T entity)
         {
-            _Context.Set<T>().Add(entity);
-            return _Context.SaveChanges();
+           await  _Context.Set<T>().AddAsync(entity);
+            return await _Context.SaveChangesAsync();
         }
 
-        public int Update(T entity)
+        public async Task<int> UpdateAsync(T entity)
         {
             _Context.Set<T>().Update(entity);
-            return _Context.SaveChanges();
+            return await _Context.SaveChangesAsync();
         }
-        public int Delete(T entity)
+        public async Task<int> DeleteAsync(T entity)
         {
             _Context.Set<T>().Remove(entity);
-            return _Context.SaveChanges();
+            return await _Context.SaveChangesAsync();
         }
 
-        public int DeletebYiD(int? id)
+        public async Task<int> DeletebYiDAsync(int? id)
         {
-            var result = _Context.Set<T>().FirstOrDefault(d => d.Id == id);
+            var result = await _Context.Set<T>().FirstOrDefaultAsync(d => d.Id == id);
             _Context.Set<T>().Remove(result);
-            return _Context.SaveChanges();
+            return await _Context.SaveChangesAsync();
         }
     }
 }

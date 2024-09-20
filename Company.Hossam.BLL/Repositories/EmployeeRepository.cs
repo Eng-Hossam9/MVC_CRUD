@@ -19,15 +19,15 @@ namespace Company.Hossam.BLL.Repositories
 
 
 
-        public IEnumerable<Employees> GetAllWithDepartment()
+        public async Task<IEnumerable<Employees>> GetAllWithDepartmentAsync()
         {
-            return _Context.Employees.Include(e=>e.WorkFor).ToList();
+            return await _Context.Employees.Include(e=>e.WorkFor).ToListAsync();
 
         }
 
-        public IEnumerable<Employees> SearchByName(string Name)
+        public async Task<IEnumerable<Employees>> SearchByNameAsync(string Name)
         {
-            return _Context.Employees.Where(e=>e.Name.ToLower().Contains(Name.ToLower())).Include(e=>e.WorkFor).AsNoTracking().ToList();
+            return await _Context.Employees.Where(e=>e.Name.ToLower().Contains(Name.ToLower())).Include(e=>e.WorkFor).AsNoTracking().ToListAsync();
         }
     }
 }
