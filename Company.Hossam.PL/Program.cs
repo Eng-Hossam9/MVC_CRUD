@@ -1,6 +1,8 @@
 using Company.Hossam.BLL.InterFaces;
 using Company.Hossam.BLL.Repositories;
 using Company.Hossam.DAL.Data.Contexts;
+using Company.Hossam.DAL.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -19,6 +21,7 @@ namespace Company.Hossam.PL
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddDbContext<HossamCompanyDB>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); //to allow Dependancy Injection 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            builder.Services.AddIdentity<ApplicationUser,IdentityRole>().AddEntityFrameworkStores<HossamCompanyDB>();
             var app = builder.Build();
 
             if (!app.Environment.IsDevelopment())

@@ -1,4 +1,6 @@
 ﻿using Company.Hossam.DAL.Model;
+using Company.Hossam.DAL.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Company.Hossam.DAL.Data.Contexts
 {
-    public class HossamCompanyDB:DbContext
+    public class HossamCompanyDB:IdentityDbContext<ApplicationUser>
     {
         public HossamCompanyDB(DbContextOptions options):base(options)
         {
