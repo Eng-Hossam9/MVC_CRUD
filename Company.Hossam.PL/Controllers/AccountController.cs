@@ -100,6 +100,14 @@ namespace Company.Hossam.PL.Controllers
             return View(model);
         }
 
+        
+
+        public new async Task<IActionResult> SignOut()
+        {
+            await _SignInManager.SignOutAsync();
+            return RedirectToAction("SignIn");
+        }
+
 
     }
 }
