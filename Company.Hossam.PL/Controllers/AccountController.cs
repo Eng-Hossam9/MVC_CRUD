@@ -10,18 +10,23 @@ namespace Company.Hossam.PL.Controllers
     {
 		private readonly UserManager<ApplicationUser> _UserManager;
 		private readonly IMapper _Mapper;
+        private readonly SignInManager<ApplicationUser> _SignInManager;
 
-		public AccountController(UserManager<ApplicationUser> userManager,IMapper mapper)
+        public AccountController(UserManager<ApplicationUser> userManager,IMapper mapper,SignInManager<ApplicationUser> signInManager)
 		{
 			_UserManager = userManager;
 			_Mapper = mapper;
-		}
+            _SignInManager = signInManager;
+        }
+        [HttpGet]
 		public IActionResult SignUp()
         {
             return View();
         }
 
-        public async Task<IActionResult> Signin(SignUpViewModel model)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SignUp(SignUpViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -46,13 +51,55 @@ namespace Company.Hossam.PL.Controllers
                         }
                     }
 
-                    ModelState.AddModelError(string.Empty, "User Already exist");
+                    ModelState.AddModelError(string.Empty, " UserEmail Already exist");
 
                 }
-				ModelState.AddModelError(string.Empty, "User Already exist");
+				ModelState.AddModelError(string.Empty, "UserName Already exist");
 
 			}
 			return View(model);
         }
+
+        [HttpGet]
+        public IActionResult SignIn()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SignIn( SignInViewModel model)
+       {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var user = await _UserManager.FindByEmailAsync(_Mapper.Map<ApplicationUser>(model).Email);
+                    if (user is not null)
+                    {
+                        var Flag = await _UserManager.CheckPasswordAsync(user, model.Password);
+                        if (Flag)
+                        {
+                           var result= await _SignInManager.PasswordSignInAsync(user,model.Password,model.RemembeME,false);
+
+                            if (result.Succeeded)
+                            {
+                                return RedirectToAction(nameof(HomeController.Index), "Home");
+                            }
+                        }
+
+                    }
+                    ModelState.AddModelError(string.Empty, "Email Or Password Error");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("",ex.Message);
+                }
+
+            }
+            return View(model);
+        }
+
+
     }
 }

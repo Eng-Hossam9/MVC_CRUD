@@ -4,11 +4,14 @@ using Company.Hossam.BLL.Repositories;
 using Company.Hossam.DAL.Model;
 using Company.Hossam.PL.Helper;
 using Company.Hossam.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Company.Hossam.PL.Controllers
 {
+    [Authorize]
+
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _EmployeeRepository;

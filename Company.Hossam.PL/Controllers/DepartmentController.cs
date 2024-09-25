@@ -3,11 +3,13 @@ using Company.Hossam.BLL.InterFaces;
 using Company.Hossam.BLL.Repositories;
 using Company.Hossam.DAL.Model;
 using Company.Hossam.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Company.Hossam.PL.Controllers
 {
+    [Authorize]
     public class DepartmentController : Controller
     {
         private readonly IDepartmentRepository _departmentRepository;

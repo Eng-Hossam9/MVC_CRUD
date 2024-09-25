@@ -19,9 +19,14 @@ namespace Company.Hossam.PL
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-            builder.Services.AddDbContext<HossamCompanyDB>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); //to allow Dependancy Injection 
+            builder.Services.AddDbContext<HossamCompanyDB>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             builder.Services.AddIdentity<ApplicationUser,IdentityRole>().AddEntityFrameworkStores<HossamCompanyDB>();
+            builder.Services.ConfigureApplicationCookie(config => {
+                                                                     config.LoginPath = "/Account/SignIn"; 
+                                                                });
+
+
             var app = builder.Build();
 
             if (!app.Environment.IsDevelopment())
@@ -37,6 +42,7 @@ namespace Company.Hossam.PL
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

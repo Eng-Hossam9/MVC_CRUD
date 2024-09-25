@@ -21,7 +21,8 @@ namespace Company.Hossam.BLL.Repositories
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             if(typeof(T)==typeof(Employees))
-            return (IEnumerable<T>) await _Context.Employees.Include(e=>e.WorkFor).AsNoTracking().ToListAsync();
+
+            return (IEnumerable<T>) await _Context.Employees.Include(e=>e.WorkFor).AsNoTracking().ToListAsync(); 
             else
             {
                 return await _Context.Set<T>().AsNoTracking().ToListAsync();

@@ -30,5 +30,9 @@ namespace Company.Hossam.PL.ViewModels
         [Required(ErrorMessage = "IsAgree is Required")]
 
         public bool IsAgree{ get; set; }
+
+		
+        [RegularExpression("01[0125][0-9]{8}",ErrorMessage =  "valid egyption PhoneNumber must start with (01)")]
+		public string? PhoneNumber { get; set; } 
     }
 }
