@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Company.Hossam.DAL.Models;
+using Company.Hossam.PL.Helper;
 using Company.Hossam.PL.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -42,7 +43,7 @@ namespace Company.Hossam.PL.Controllers
 
                         if (result.Succeeded)
                         {
-                            return RedirectToAction("SingIn");
+                            return RedirectToAction("SignIn");
 
                         }
                         foreach (var error in result.Errors)
@@ -107,6 +108,79 @@ namespace Company.Hossam.PL.Controllers
             await _SignInManager.SignOutAsync();
             return RedirectToAction("SignIn");
         }
+
+
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> SendVereficationLink(ForgetPasswordViewmodel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _UserManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    var token= _UserManager.GeneratePasswordResetTokenAsync(user);
+                    var url = Url.Action("ResetPassword", "Account", new { Email = model.Email, Token = token },Request.Scheme);
+                    var email = new Email()
+                    {
+                         To= model.Email,
+                         Subject="ResetPassword",
+                         Body=url
+                    };
+                    EmailSettings.SentEmail(email);
+
+                    
+                    return RedirectToAction("ResetPassword");
+                }
+            }
+            ModelState.AddModelError("", "Invalide Operation,please Try Again");
+            return View("ForgetPassword", model);
+        }
+
+
+        public IActionResult CheckInbox()
+        {
+            return View();
+
+        }
+
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email,string token)
+        {
+            TempData["email"] = email;
+            TempData["token"]=token;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPpasswordViewModel model)
+        {
+           
+            if (ModelState.IsValid)
+            {
+                var email = TempData["email"] as string;
+                var token = TempData["token"] as string;
+                 
+                var user=await _UserManager.FindByEmailAsync(email);
+                if (user != null) 
+                {
+                    var result =await _UserManager.ResetPasswordAsync(user, token,model.Password);
+                    if (result.Succeeded) 
+                    {
+                        return RedirectToAction(nameof(SignIn));
+                    }
+                }
+            }
+            ModelState.AddModelError("", "Invalide Operation");
+
+            return View(model);
+        }
+
+
 
 
     }

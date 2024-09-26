@@ -17,11 +17,19 @@ namespace Company.Hossam.PL
             // Add services to the container.
 
             builder.Services.AddControllersWithViews();
+            
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            
             builder.Services.AddDbContext<HossamCompanyDB>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            builder.Services.AddIdentity<ApplicationUser,IdentityRole>().AddEntityFrameworkStores<HossamCompanyDB>();
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<HossamCompanyDB>()
+                .AddDefaultTokenProviders();
+            
             builder.Services.ConfigureApplicationCookie(config => {
                                                                      config.LoginPath = "/Account/SignIn"; 
                                                                 });
