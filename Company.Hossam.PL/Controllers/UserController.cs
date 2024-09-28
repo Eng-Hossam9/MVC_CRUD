@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 
 namespace Company.Hossam.PL.Controllers
 {
@@ -30,38 +31,43 @@ namespace Company.Hossam.PL.Controllers
         }
 
 
+
+
+
+
         public async Task<IActionResult> Index(string searchInput = "")
         {
-            var user = Enumerable.Empty<UserViewModel>();
+            var userList = Enumerable.Empty<ApplicationUser>();
 
-            if (searchInput.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(searchInput))
             {
-                user = await _UserManager.Users.Select(u => new UserViewModel()
-                {
-                    Email = u.Email,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Id = u.Id,
-                    UserName = u.UserName,
-                    Roles = _UserManager.GetRolesAsync(u).Result
-                }).ToListAsync();
-
+                userList = await _UserManager.Users.ToListAsync();
             }
             else
             {
-                user = await _UserManager.Users.Where(U => U.Email.ToLower().Contains(searchInput.ToLower())).Select(u => new UserViewModel()
-                {
-                    Email = u.Email,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Id = u.Id,
-                    UserName = u.UserName,
-                    Roles = _UserManager.GetRolesAsync(u).Result
-                }).ToListAsync();
-
+                userList = await _UserManager.Users
+                    .Where(u => u.Email.ToLower().Contains(searchInput.ToLower()))
+                    .ToListAsync();
             }
 
-            return View(user);
+            var userViewModels = new List<UserViewModel>();
+
+            foreach (var user in userList)
+            {
+                var roles = await _UserManager.GetRolesAsync(user); 
+
+                userViewModels.Add(new UserViewModel()
+                {
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Roles = roles
+                });
+            }
+
+            return View(userViewModels); // Return the view with the list of user view models
         }
 
         [ValidateAntiForgeryToken]
