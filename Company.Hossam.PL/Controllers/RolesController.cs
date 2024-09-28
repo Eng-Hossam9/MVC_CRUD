@@ -248,21 +248,21 @@ namespace Company.Hossam.PL.Controllers
                     var appuser = await _userManager.FindByIdAsync(user.Id);
 
 
-                    if (user.IsChecked == true && ! await _userManager.IsInRoleAsync(appuser , role.Name))
+                    if (user.IsChecked == true && !await _userManager.IsInRoleAsync(appuser, role.Name))
                     {
                         await _userManager.AddToRoleAsync(appuser, role.Name);
 
                     }
-                    else if (! user.IsChecked == true && await _userManager.IsInRoleAsync(appuser, role.Name))
+                    else if (!user.IsChecked == true && await _userManager.IsInRoleAsync(appuser, role.Name))
                     {
-                         await _userManager.RemoveFromRoleAsync(appuser,role.Name);
+                        await _userManager.RemoveFromRoleAsync(appuser, role.Name);
 
                     }
 
                 }
                 return RedirectToAction(nameof(Index));
             }
-                return View(assignRoleViewModels);
+            return View(assignRoleViewModels);
 
 
 
