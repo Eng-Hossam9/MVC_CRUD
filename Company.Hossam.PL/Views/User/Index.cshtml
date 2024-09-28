@@ -1,0 +1,96 @@
+﻿@model IEnumerable<UserViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<form asp-action="Index">
+    <div class="row">
+
+        <div class="col-md-8">
+            <input type="text" name="searchInput" value="" placeholder="Search by Name" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <input class="btn btn-success" value="Search" type="submit" />
+        </div>
+    </div>
+
+</form>
+
+
+
+@if (Model.Count() > 0)
+{
+    <table class="table table-striped table-hover text-center mt-5">
+
+        <thead>
+            <tr>
+               
+                <th>
+                    FirstName
+                </th>
+                <th>
+                    LastName
+                </th>
+                <th>
+                    UserName
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Roles
+                </th>
+                
+                <th>
+                    Details
+                </th>
+                <th>
+                    Update
+                </th>
+                <th>
+                    Delete
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var User in Model)
+            {
+                <tr>
+                   
+                    <td>@User.FirstName</td>
+                    <td>@User.LastName</td>
+                    <td>@User.UserName</td>
+                    <td>@User.Email</td>
+                    <td>@String.Join(",", User.Roles)</td>
+         
+
+                    <td>
+                        <a asp-controller="User" asp-route-id="@User.Id" asp-action="Details" class="btn btn-warning">Details</a>
+                    </td>
+                    <td>
+                        <a asp-controller="User" asp-route-id="@User.Id" asp-action="Update" class="btn btn-success">Update</a>
+                    </td>
+                    <td>
+                        <form asp-controller="User" asp-action="Delete" asp-route-id="@User.Id" method="post" style="display:inline;">
+                            @Html.AntiForgeryToken() <!-- CSRF protection -->
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Employee?');">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class=" alert alert-danger">
+        <h4>NO Data </h4>
+    </div>
+}

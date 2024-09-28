@@ -10,8 +10,8 @@ namespace Company.Hossam.PL.Helper
         {
             var Client = new SmtpClient("smtp.gmail.com", 587);
             Client.EnableSsl = true;
-            Client.Credentials = new NetworkCredential("hossamdev199@gmail.com","");
-            Client.Send("hossamdev199@gmail.com", email.To, email.Subject, email.Body);
+            Client.Credentials = new NetworkCredential("hossamdev9@gmail.com","");
+            Client.Send("hossamdev9@gmail.com", email.To, email.Subject, email.Body);
         }
 
     }

@@ -1,0 +1,38 @@
+﻿@model RoleViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<h4>Add Role</h4>
+<hr />
+<div class="row my-3">
+    <div class="col-md-12">
+        <form class=" form-control " method="post" asp-controller="Roles" asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group my-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            
+       
+
+
+            <div class="form-group my-3">
+                <input type="submit" value="Create" class="btn btn-success" />
+                <a class="btn btn-primary" asp-action="Index" asp-controller="Roles">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Validation{
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+
+
